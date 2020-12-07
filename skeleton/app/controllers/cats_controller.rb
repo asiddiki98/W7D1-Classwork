@@ -1,4 +1,7 @@
 class CatsController < ApplicationController
+  before_action :ensure_logged_in, only: [:new, :create, :edit, :update]
+  before_action :ensure_owner, only: [:edit, :update]
+
   def index
     @cats = Cat.all
     render :index
@@ -39,9 +42,14 @@ class CatsController < ApplicationController
     end
   end
 
+
   private
 
+  def ensure_owner
+    current_user.cats.include?(params[:cat][:id])
+  end 
+
   def cat_params
-    params.require(:cat).permit(:age, :birth_date, :color, :description, :name, :sex)
+    params.require(:cat).permit(:age, :birth_date, :color, :description, :name, :sex, :user_id)
   end
 end

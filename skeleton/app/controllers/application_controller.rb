@@ -26,5 +26,7 @@ class ApplicationController < ActionController::Base
   def ensure_logged_out
     redirect_to new_session_url if !logged_in?
   end
+
+  
   
 end
